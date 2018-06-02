@@ -1,0 +1,89 @@
+'''This program is an BlackJack Python implementation
+Author: Wahab Ehsan'''
+import random
+
+
+class Card:
+    __type = ""
+    __value = 0
+
+    def __init__(self, type, value):
+        self.__type = type
+        self.__value = value
+
+    def __type(self, type):
+        set.__type = type
+
+    def __type(self):
+        return self.__type
+
+    def set_value(self, value):
+        set.__value = value
+
+    def get_value(self):
+        return self.__value
+
+    def toString(self):
+        return "The card is {} of {}".format(self.__value, self.__type)
+
+
+test = Card("heart", 8)
+
+print(test.toString())
+
+
+class DeckOfCards:
+    cards = []
+
+    def __init__(self):
+        self.addCards()
+
+    def addCards(self):
+        for x in range(2, 15):
+            self.cards.append(Card("Heart", x))
+            self.cards.append(Card("Club", x))
+            self.cards.append(Card("Spades", x))
+            self.cards.append(Card("Diamond", x))
+
+    def toString(self):
+
+        content = "["
+        for x in self.cards:
+            content += x.toString() + ", "
+        # Returns the content and removes the extra space and comma by a backspace times two.
+        return content + "\b"*2 + "]"
+
+
+a = DeckOfCards()
+
+print a.toString()
+
+
+class BlackJack:
+    thedeck = None
+    hand = []
+
+    def __init__(self):
+        self.thedeck = DeckOfCards()
+
+    def pickTwo(self):
+        firstcardi = 0
+        secondcardi = 0
+        while firstcardi == secondcardi:
+            firstcardi = random.randrange(0, 53)
+            secondcardi = random.randrange(0, 53)
+        firstcard = self.thedeck.cards[firstcardi]
+        secondcard = self.thedeck.cards[secondcardi]
+        self.hand = [firstcard, secondcard]
+        print(firstcard.toString())
+        print(secondcard.toString())
+
+    def hitMe(self):
+        nextCard = 0
+        while nextCard == (self.hand[0].get_value() and self.hand[1].get_value()):
+            nextCard = random.randrange(0, 53)
+
+
+b = BlackJack()
+
+b.pickTwo()
