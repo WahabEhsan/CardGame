@@ -3,6 +3,7 @@ Author: Wahab Ehsan'''
 import random
 import sys
 
+
 class Card:
     __type = ""
     __value = 0
@@ -27,6 +28,25 @@ class Card:
 
     def get_value(self):
         return self.__value
+
+    def get_color(self):
+        return self.__color
+
+    def get_weight(self):
+        if self.__value == 11:
+            return 10
+        elif self.__value == 12:
+            return 10
+        elif self.__value == 13:
+            return 10
+        elif self.__value == 14:
+            return 11
+        else:
+            return self.__value
+
+    def changeWeightToOne(self):
+        if self.__value == 14:
+            return 1
 
     def toString(self):
         val = self.__value
@@ -63,11 +83,6 @@ class DeckOfCards:
         return content + "\b"*2 + "]"
 
 
-#a = DeckOfCards()
-
-#print a.toString()
-
-
 class BlackJack:
     thedeck = None
     hand = []
@@ -91,6 +106,10 @@ class BlackJack:
         self.picked[secondcardi] = True
         print(firstcard.toString())
         print(secondcard.toString())
+        print("The sum of cards in your hand is: ")
+        print(firstcard.get_weight())
+        print(secondcard.get_weight())
+        print(firstcard.get_weight() + secondcard.get_weight())
 
     def hitMe(self):
         loop = True
@@ -107,6 +126,9 @@ class BlackJack:
         self.hand.append(nextCard)
         self.picked[num] = True
         print(nextCard.toString())
+        print("All your cards in hand: ")
+        for x in self.hand:
+            print(x.toString())
 
 
 def main():
@@ -126,17 +148,18 @@ def userInterface():
 
 def initiateBJGame(game):
     game.pickTwo()
-    print("Hit You? or Ready to show? (Type \"hitme\" or \"ready\")")
-    inp = sys.stdin.readline()
-    while not (inp.__contains__("hitme") or inp.__contains__("ready")):
-        print("Invalid input. Please enter \"hitme\" or \"ready\"")
+    loop = True
+    while loop:
+        print("Hit You? or Ready to show? (Type \"hitme\" or \"ready\")")
         inp = sys.stdin.readline()
-    if inp.__contains__("hitme"):
-        print("Card added to your hand: ")
-        game.hitMe()
-        print("All your cards in hand: ")
-        for x in game.hand:
-            print(x.toString)
+        while not (inp.__contains__("hitme") or inp.__contains__("ready") or inp.__contains__("hit")):
+            print("Invalid input. Please enter \"hitme\" or \"ready\"")
+            inp = sys.stdin.readline()
+        if inp.__contains__("hitme") or inp.__contains__("hit"):
+            print("Card added to your hand: ")
+            game.hitMe()
+        else:
+            loop = False
 
 
 if __name__ == '__main__':
