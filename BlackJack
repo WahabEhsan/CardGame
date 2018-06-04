@@ -6,10 +6,15 @@ import random
 class Card:
     __type = ""
     __value = 0
+    __color = ""
 
     def __init__(self, type, value):
         self.__type = type
         self.__value = value
+        if type == "Heart" or "Diamond":
+            self.__color = "Red"
+        else:
+            self.__color = "Black"
 
     def __type(self, type):
         set.__type = type
@@ -24,12 +29,16 @@ class Card:
         return self.__value
 
     def toString(self):
-        return "The card is {} of {}".format(self.__value, self.__type)
-
-
-test = Card("heart", 8)
-
-print(test.toString())
+        val = self.__value
+        if self.__value == 11:
+            val = "Jack"
+        elif self.__value == 12:
+            val = "Queen"
+        elif self.__value == 13:
+            val = "King"
+        elif self.__value == 14:
+            val = "Ace"
+        return "The card is {} of {}".format(val, self.__type)
 
 
 class DeckOfCards:
@@ -40,10 +49,10 @@ class DeckOfCards:
 
     def addCards(self):
         for x in range(2, 15):
-            self.cards.append(Card("Heart", x))
-            self.cards.append(Card("Club", x))
+            self.cards.append(Card("Hearts", x))
+            self.cards.append(Card("Clubs", x))
             self.cards.append(Card("Spades", x))
-            self.cards.append(Card("Diamond", x))
+            self.cards.append(Card("Diamonds", x))
 
     def toString(self):
 
@@ -62,28 +71,40 @@ print a.toString()
 class BlackJack:
     thedeck = None
     hand = []
+    picked = []
 
     def __init__(self):
         self.thedeck = DeckOfCards()
+        self.picked = [False] * 52
 
     def pickTwo(self):
         firstcardi = 0
         secondcardi = 0
         while firstcardi == secondcardi:
-            firstcardi = random.randrange(0, 53)
-            secondcardi = random.randrange(0, 53)
+            firstcardi = random.randrange(0, 52)
+            secondcardi = random.randrange(0, 52)
         firstcard = self.thedeck.cards[firstcardi]
         secondcard = self.thedeck.cards[secondcardi]
         self.hand = [firstcard, secondcard]
+        self.picked[firstcardi] = True
+        self.picked[secondcardi] = True
         print(firstcard.toString())
         print(secondcard.toString())
 
     def hitMe(self):
-        nextCard = 0
-        while nextCard == (self.hand[0].get_value() and self.hand[1].get_value()):
-            nextCard = random.randrange(0, 53)
+        nextCardi = random.randrange(0, 52)
+        for x in self.hand:
+            while not self.picked[self.thedeck.cards.index(x)]:
+                if self.picked[self.thedeck.cards.index(x)]:
+                    nextCardi = random.randrange(0, 52)
+        nextCard = self.thedeck.cards[nextCardi]
+        self.hand.append(nextCard)
+        self.picked[nextCardi] = True
+        print(nextCard.toString())
 
 
 b = BlackJack()
 
 b.pickTwo()
+b.hitMe()
+b.hitMe()
