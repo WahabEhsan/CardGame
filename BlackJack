@@ -1,7 +1,7 @@
 '''This program is an BlackJack Python implementation
 Author: Wahab Ehsan'''
 import random
-
+import sys
 
 class Card:
     __type = ""
@@ -38,7 +38,7 @@ class Card:
             val = "King"
         elif self.__value == 14:
             val = "Ace"
-        return "The card is {} of {}".format(val, self.__type)
+        return "{} of {}".format(val, self.__type)
 
 
 class DeckOfCards:
@@ -63,9 +63,9 @@ class DeckOfCards:
         return content + "\b"*2 + "]"
 
 
-a = DeckOfCards()
+#a = DeckOfCards()
 
-print a.toString()
+#print a.toString()
 
 
 class BlackJack:
@@ -78,6 +78,7 @@ class BlackJack:
         self.picked = [False] * 52
 
     def pickTwo(self):
+        print("Your first two cards: ")
         firstcardi = 0
         secondcardi = 0
         while firstcardi == secondcardi:
@@ -92,19 +93,57 @@ class BlackJack:
         print(secondcard.toString())
 
     def hitMe(self):
-        nextCardi = random.randrange(0, 52)
-        for x in self.hand:
-            while not self.picked[self.thedeck.cards.index(x)]:
-                if self.picked[self.thedeck.cards.index(x)]:
-                    nextCardi = random.randrange(0, 52)
-        nextCard = self.thedeck.cards[nextCardi]
+        loop = True
+        num = random.randrange(0, 52)
+        nextCard = self.thedeck.cards[num]
+        while loop:
+            for x in self.hand:
+                if x == nextCard:
+                    num = random.randrange(0, 52)
+                    nextCard = self.thedeck.cards[num]
+                    continue
+                else:
+                    loop = False
         self.hand.append(nextCard)
-        self.picked[nextCardi] = True
+        self.picked[num] = True
         print(nextCard.toString())
 
 
-b = BlackJack()
+def main():
+    userInterface()
 
-b.pickTwo()
-b.hitMe()
-b.hitMe()
+
+def userInterface():
+    print("Hello and Welcome to CardGame!")
+    print("What would you like to play? (BlackJack)")
+    input = sys.stdin.readline()
+    while not (input.__contains__("BlackJack") or input.__contains__("blackjack") or input.__contains__("Blackjack")):
+        print("Invalid input. Please enter a card game.")
+        input = sys.stdin.readline()
+    game = BlackJack()
+    initiateBJGame(game)
+
+
+def initiateBJGame(game):
+    game.pickTwo()
+    print("Hit You? or Ready to show? (Type \"hitme\" or \"ready\")")
+    inp = sys.stdin.readline()
+    while not (inp.__contains__("hitme") or inp.__contains__("ready")):
+        print("Invalid input. Please enter \"hitme\" or \"ready\"")
+        inp = sys.stdin.readline()
+    if inp.__contains__("hitme"):
+        print("Card added to your hand: ")
+        game.hitMe()
+        print("All your cards in hand: ")
+        for x in game.hand:
+            print(x.toString)
+
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
