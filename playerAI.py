@@ -32,9 +32,9 @@ class AiBlackJack:
         risk = random.randrange(0,5)
         permission = random.randrange(0,1)
         while loop2:
-            if (risk == 5) and sum > 18 :
+            if (risk == 5) and summ > 18 :
                 hitai
-            if sum < 18:
+            if summ < 18:
                 hitai
             else:
                 if permission == 1:
