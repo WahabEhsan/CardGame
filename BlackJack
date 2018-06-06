@@ -107,8 +107,8 @@ class BlackJack:
         print(firstcard.toString())
         print(secondcard.toString())
         print("The sum of cards in your hand is: ")
-        print(firstcard.get_weight())
-        print(secondcard.get_weight())
+        # print(firstcard.get_weight())
+        # print(secondcard.get_weight())
         print(firstcard.get_weight() + secondcard.get_weight())
 
     def hitMe(self):
@@ -127,8 +127,12 @@ class BlackJack:
         self.picked[num] = True
         print(nextCard.toString())
         print("All your cards in hand: ")
+        sum = 0
         for x in self.hand:
             print(x.toString())
+            sum += x.get_weight()
+        print("The sum of cards in your hand is: ")
+        print(sum)
 
 
 def main():
