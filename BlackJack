@@ -109,7 +109,12 @@ class BlackJack:
         print("The sum of cards in your hand is: ")
         # print(firstcard.get_weight())
         # print(secondcard.get_weight())
-        print(firstcard.get_weight() + secondcard.get_weight())
+        sum = firstcard.get_weight() + secondcard.get_weight()
+        print(sum)
+        if sum == 21:
+            return False
+        else:
+            return True
 
     def hitMe(self):
         loop = True
@@ -133,6 +138,10 @@ class BlackJack:
             sum += x.get_weight()
         print("The sum of cards in your hand is: ")
         print(sum)
+        if sum > 21:
+            return False
+        else:
+            return True
 
 
 def main():
@@ -151,8 +160,12 @@ def userInterface():
 
 
 def initiateBJGame(game):
-    game.pickTwo()
     loop = True
+    hit_me_bool = True
+    pick_two_bool = game.pickTwo()
+    if not pick_two_bool:
+        print("Woah! 21 already!")
+        loop = False
     while loop:
         print("Hit You? or Ready to show? (Type \"hitme\" or \"ready\")")
         inp = sys.stdin.readline()
@@ -161,7 +174,10 @@ def initiateBJGame(game):
             inp = sys.stdin.readline()
         if inp.__contains__("hitme") or inp.__contains__("hit"):
             print("Card added to your hand: ")
-            game.hitMe()
+            hit_me_bool = game.hitMe()
+            if not hit_me_bool:
+                print("Bust! Try again :(")
+                loop = False
         else:
             loop = False
 
