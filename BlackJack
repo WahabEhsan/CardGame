@@ -3,16 +3,20 @@ Author: Wahab Ehsan'''
 import random
 import sys
 import deck
+import playerAI
 
 
 class BlackJack:
     thedeck = None
     hand = []
     picked = []
+    ai = None
 
     def __init__(self):
         self.thedeck = deck.DeckOfCards()
         self.picked = [False] * 52
+        self.ai = playerAI.AiBlackJack()
+        print("Both of you are handed two cards each.")
 
     def pickTwo(self):
         print("Your first two cards: ")
@@ -44,7 +48,7 @@ class BlackJack:
         nextCard = self.thedeck.cards[num]
         while loop:
             for x in self.hand:
-                if x == nextCard:
+                if (x == nextCard):
                     num = random.randrange(0, 52)
                     nextCard = self.thedeck.cards[num]
                     continue
@@ -59,6 +63,64 @@ class BlackJack:
             print(x.toString())
             sum += x.get_weight()
         print("The sum of cards in your hand is: ")
+        print(sum)
+        # sum = 21
+        if sum == 21:
+            print("You got it!")
+            return False
+        elif sum > 21:
+            print("Bust! Try again :(")
+            return False
+        else:
+            return True
+
+    def game_reset(self):
+        self.thedeck = deck.DeckOfCards()
+        self.picked = [False] * 52
+
+    def pickTwoAI(self):
+        firstcardi = 0
+        secondcardi = 0
+        while (firstcardi == secondcardi) and (self.picked[secondcardi] and self.picked[secondcardi]):
+            firstcardi = random.randrange(0, 52)
+            secondcardi = random.randrange(0, 52)
+        firstcard = self.thedeck.cards[firstcardi]
+        secondcard = self.thedeck.cards[secondcardi]
+        self.ai.ai_hand = [firstcard, secondcard]
+        self.picked[firstcardi] = True
+        self.picked[secondcardi] = True
+        print("--" + firstcard.toString())
+        print("--" + secondcard.toString())
+        #print("The sum of cards in your hand is: ")
+        sum = firstcard.get_weight() + secondcard.get_weight()
+        #print(sum)
+        if sum == 21:
+            return False
+        else:
+            return True
+
+    def hitAI(self):
+        print(self.ai.get_name() + " has gotten a card from the deck.")
+        loop = True
+        num = random.randrange(0, 52)
+        nextCard = self.thedeck.cards[num]
+        while loop:
+            for y in self.hand:
+                for x in self.ai.ai_hand:
+                    if (x == nextCard) or (y == nextCard):
+                        num = random.randrange(0, 52)
+                        nextCard = self.thedeck.cards[num]
+                        continue
+                    else:
+                        loop = False
+        self.ai.ai_hand.append(nextCard)
+        self.picked[num] = True
+        print(nextCard.toString())
+        sum = 0
+        for x in self.hand:
+            print(x.toString())
+            sum += x.get_weight()
+        # print("The sum of cards in Ai hand is: ")
         print(sum)
         if sum > 21:
             return False
@@ -97,10 +159,23 @@ def initiateBJGame(game):
             print("Card added to your hand: ")
             hit_me_bool = game.hitMe()
             if not hit_me_bool:
-                print("Bust! Try again :(")
-                loop = False
+                if not next_game(game):
+                    print("Thank you for playing!")
+                    loop = False
         else:
             loop = False
+
+
+def next_game(game):
+    print("Another round? (y or n)")
+    another = sys.stdin.readline()
+    if another.__contains__("y"):
+        game.game_reset()
+        initiateBJGame(game)
+    elif another.__contains__("n"):
+        return False
+    else:
+        next_game(game)
 
 
 if __name__ == '__main__':
