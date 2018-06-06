@@ -2,85 +2,7 @@
 Author: Wahab Ehsan'''
 import random
 import sys
-
-
-class Card:
-    __type = ""
-    __value = 0
-    __color = ""
-
-    def __init__(self, type, value):
-        self.__type = type
-        self.__value = value
-        if type == "Heart" or "Diamond":
-            self.__color = "Red"
-        else:
-            self.__color = "Black"
-
-    def __type(self, type):
-        set.__type = type
-
-    def __type(self):
-        return self.__type
-
-    def set_value(self, value):
-        set.__value = value
-
-    def get_value(self):
-        return self.__value
-
-    def get_color(self):
-        return self.__color
-
-    def get_weight(self):
-        if self.__value == 11:
-            return 10
-        elif self.__value == 12:
-            return 10
-        elif self.__value == 13:
-            return 10
-        elif self.__value == 14:
-            return 11
-        else:
-            return self.__value
-
-    def changeWeightToOne(self):
-        if self.__value == 14:
-            return 1
-
-    def toString(self):
-        val = self.__value
-        if self.__value == 11:
-            val = "Jack"
-        elif self.__value == 12:
-            val = "Queen"
-        elif self.__value == 13:
-            val = "King"
-        elif self.__value == 14:
-            val = "Ace"
-        return "{} of {}".format(val, self.__type)
-
-
-class DeckOfCards:
-    cards = []
-
-    def __init__(self):
-        self.addCards()
-
-    def addCards(self):
-        for x in range(2, 15):
-            self.cards.append(Card("Hearts", x))
-            self.cards.append(Card("Clubs", x))
-            self.cards.append(Card("Spades", x))
-            self.cards.append(Card("Diamonds", x))
-
-    def toString(self):
-
-        content = "["
-        for x in self.cards:
-            content += x.toString() + ", "
-        # Returns the content and removes the extra space and comma by a backspace times two.
-        return content + "\b"*2 + "]"
+import deck
 
 
 class BlackJack:
@@ -89,7 +11,7 @@ class BlackJack:
     picked = []
 
     def __init__(self):
-        self.thedeck = DeckOfCards()
+        self.thedeck = deck.DeckOfCards()
         self.picked = [False] * 52
 
     def pickTwo(self):
@@ -161,7 +83,6 @@ def userInterface():
 
 def initiateBJGame(game):
     loop = True
-    hit_me_bool = True
     pick_two_bool = game.pickTwo()
     if not pick_two_bool:
         print("Woah! 21 already!")
