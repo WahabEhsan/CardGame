@@ -28,16 +28,4 @@ class AiBlackJack:
     def get_name(self):
         return self.get_name()
 
-    def ai_processing(self):
-        risk = random.randrange(0,5)
-        permission = random.randrange(0,1)
-        while loop2:
-            if (risk == 5) and summ > 18 :
-                hitai
-            if summ < 18:
-                hitai
-            else:
-                if permission == 1:
-                    hitai
-                else:
-                    loop2 = False
+

@@ -77,7 +77,6 @@ class BlackJack:
     def game_reset(self):
         self.thedeck = deck.DeckOfCards()
         self.picked = [False] * 52
-# test
 
     def pickTwoAI(self):
         firstcardi = 0
@@ -101,25 +100,26 @@ class BlackJack:
             return True
 
     def hitAI(self):
-        print(self.ai.get_name() + " has gotten a card from the deck.")
-        loop = True
+        print("Your opponent took a card from the deck.")
         num = random.randrange(0, 52)
+        while self.picked[num]:
+            num = random.randrange(0, 52)
         nextCard = self.thedeck.cards[num]
-        while loop:
-            for y in self.hand:
-                for x in self.ai.ai_hand:
-                    if (x == nextCard) or (y == nextCard):
-                        num = random.randrange(0, 52)
-                        nextCard = self.thedeck.cards[num]
-                        continue
-                    else:
-                        loop = False
+        #while loop:
+         #   for y in self.hand:
+          #      for x in self.ai.ai_hand:
+           #         if (x == nextCard) or (y == nextCard):
+            #            num = random.randrange(0, 52)
+             #           nextCard = self.thedeck.cards[num]
+              #          continue
+               #     else:
+                #        loop = False
         self.ai.ai_hand.append(nextCard)
         self.picked[num] = True
-        print(nextCard.toString())
+        print("--" + nextCard.toString())
         sum = 0
-        for x in self.hand:
-            print(x.toString())
+        for x in self.ai.ai_hand:
+            print("--" + x.toString())
             sum += x.get_weight()
         # print("The sum of cards in Ai hand is: ")
         print(sum)
@@ -127,6 +127,28 @@ class BlackJack:
             return False
         else:
             return True
+
+    def ai_processing(self):
+        loop2 = True
+        risk = random.randrange(0, 5)
+        permission = random.randrange(0, 1)
+        summ = 0
+        for x in self.ai.ai_hand:
+            summ += x.get_weight()
+        while loop2:
+            #risk = random.randrange(0, 5)
+            #permission = random.randrange(0, 1)
+            if summ <= 21:
+                print("--")
+            if (risk == 5) and summ > 18:
+                self.hitAI()
+            if summ < 18:
+                self.hitAI()
+            else:
+                if permission == 1:
+                    self.hitAI()
+                else:
+                    loop2 = False
 
 
 def main():
@@ -146,7 +168,10 @@ def userInterface():
 
 def initiateBJGame(game):
     loop = True
+    ai_pick = game.pickTwoAI()
     pick_two_bool = game.pickTwo()
+    if ai_pick:
+        game.ai_processing()
     if not pick_two_bool:
         print("Woah! 21 already!")
         loop = False
@@ -161,7 +186,6 @@ def initiateBJGame(game):
             hit_me_bool = game.hitMe()
             if not hit_me_bool:
                 if not next_game(game):
-                    print("Thank you for playing!")
                     loop = False
         else:
             loop = False
@@ -174,6 +198,7 @@ def next_game(game):
         game.game_reset()
         initiateBJGame(game)
     elif another.__contains__("n"):
+        print("Thank you for playing!")
         return False
     else:
         next_game(game)
